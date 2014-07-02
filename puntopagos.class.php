@@ -8,6 +8,14 @@ require_once('puntopagos.inc.php');
 date_default_timezone_set('America/Santiago');
 class PuntoPagos {
 
+    /**
+    * Crea la transaccion para después redireccionar a PuntoPagos donde se realizará la selección
+    * de el medio de pago
+    * @param sring $trx_id Id de la transaccion asignado por la aplicacion cliente
+    * @param sring $monto Monto del pago a cobrar a través de PuntoPagos
+    * @return array Respuesta
+    */
+
     public static function CrearTransaccion($trx_id, $monto)
     {
         $funcion = 'transaccion/crear';
@@ -17,6 +25,15 @@ class PuntoPagos {
         return json_decode(PuntoPagos::ExecuteCommand(PUNTOPAGOS_URL.'/'.$funcion, $header_array, $data));
     }
 
+   /**
+    *  Crea la transaccion ya habiendo seleccionado un medio de pago en la aplicacion, haciendo
+    * la redireccion correspondiente al medio de pago elegido
+    * @param sring $trx_id Id de la transaccion asignado por la aplicacion cliente
+    * @param sring $medio_pago Medio de pago elegido por el usuario, segun codificacion disponible en la documentacion de PuntoPagos
+    * @param sring $monto Monto del pago a cobrar a través de PuntoPagos
+    * @return array Respuesta
+    */
+
     public static function CrearTransaccionMP($trx_id, $medio_pago, $monto)
     {
         $funcion = 'transaccion/crear';
@@ -24,6 +41,23 @@ class PuntoPagos {
         $data = '{"trx_id":"'.$trx_id.'","medio_pago":"'.$medio_pago.'","monto":"'.$monto_str.'}';
         $header_array = PuntoPagos::TraerHeader($funcion, $trx_id, $monto_str);
         return json_decode(PuntoPagos::ExecuteCommand(PUNTOPAGOS_URL.'/'.$funcion, $header_array, $data));
+    }
+
+    /**
+    *  Metodo para consultar el estado de una transacción en particular
+    * la redireccion correspondiente al medio de pago elegido
+    * @param sring $token Token de la transaccion
+    * @param sring $trx_id Id de la transaccion asignado por la aplicacion cliente
+    * @param sring $monto Monto del pago de la transaccion a consultar
+    * @return array Respuesta
+    */
+
+    function ConsultarTransaccion($token, $trx_id, $monto){
+        $funcion = 'transaccion';
+        $header_funcion = 'transaccion/traer';
+        $monto_str = number_format($monto, 2, '.', '');
+        $header_array = PuntoPagos::TraerHeaderConsulta($header_funcion, $token, $trx_id, $monto_str);
+        return json_decode(PuntoPagos::ExecuteCommandGET(PUNTOPAGOS_URL.'/'.$funcion.'/'.$token, $header_array));
     }
 
     public static function FirmarMensaje($str) {
