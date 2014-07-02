@@ -4,8 +4,9 @@
  *
  * @author dvinales & guillehorno
  */
+
 require_once('puntopagos.inc.php');
-date_default_timezone_set('America/Santiago');
+
 class PuntoPagos {
 
     /**
@@ -84,7 +85,7 @@ class PuntoPagos {
         curl_setopt($ch, CURLOPT_URL,$url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
         curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_USERAGENT, 'puntopagos-curl');
+        curl_setopt($ch, CURLOPT_USERAGENT, 'PuntoPagos-curl');
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         //execute post
         $result = curl_exec($ch);
