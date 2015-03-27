@@ -78,6 +78,18 @@ class PuntoPagos {
                               'Autorizacion:'.$firma);
         return $header_array;
     }
+    
+    function TraerHeaderConsulta($funcion, $token, $trx_id, $monto_str) {
+	      $fecha = date("D, d M Y H:i:s", time())." GMT";
+	      $mensaje = $funcion."\n".$token."\n".$trx_id."\n".$monto_str."\n".$fecha;
+	      $firma = PuntoPagos::FirmarMensaje($mensaje);
+     	 	$header_array = array('Accept: application/json',
+                              "Content-Type: application/json; charset=utf-8",
+                              'Accept-Charset: utf-8',
+                              'Fecha: '. $fecha,
+                              'Autorizacion:'.$firma);
+	      return $header_array;
+	  }
 
     public static function ExecuteCommand($url, $header_array, $data) {
         $ch = curl_init();
