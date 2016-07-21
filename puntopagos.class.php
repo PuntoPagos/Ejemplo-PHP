@@ -112,7 +112,7 @@ class PuntoPagos {
 
     }
     
-    function ExecuteCommandGET($url, $header_array) {
+    public static function ExecuteCommandGET($url, $header_array) {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_HTTPHEADER, $header_array);
         curl_setopt($ch, CURLOPT_URL,$url);
