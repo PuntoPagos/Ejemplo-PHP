@@ -118,7 +118,7 @@ class PuntoPagos {
         curl_setopt($ch, CURLOPT_URL,$url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
         curl_setopt($ch, CURLOPT_USERAGENT, 'PuntoPagos-curl');
-        //execute post
+        //execute get
         $result = curl_exec($ch);
         $error =  curl_error($ch);
         curl_close($ch);
