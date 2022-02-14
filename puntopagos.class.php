@@ -61,9 +61,15 @@ class PuntoPagos {
         return json_decode(PuntoPagos::ExecuteCommandGET(PUNTOPAGOS_URL.'/'.$funcion.'/'.$token, $header_array));
     }
 
+	
     public static function FirmarMensaje($str) {
-        $signature = base64_encode(hash_hmac('sha1', $str, PUNTOPAGOS_SECRET, true));
-        return "PP ".PUNTOPAGOS_KEY.":".$signature;
+        if(strlen(PUNTOPAGOS_SECRET) <= 40){
+            $signature = base64_encode(hash_hmac('sha1', $str, PUNTOPAGOS_SECRET, true));
+            return "PP ".PUNTOPAGOS_KEY.":".$signature;
+        } else {
+            $signature = base64_encode(hash_hmac('sha512', $str, PUNTOPAGOS_SECRET, true));
+            return "PP ".PUNTOPAGOS_KEY.":".$signature;
+        }
     }
 
     public static function TraerHeader($funcion, $trx_id, $monto_str)
